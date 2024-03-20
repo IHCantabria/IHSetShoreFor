@@ -1,0 +1,11 @@
+LICENSE
+README.md
+setup.py
+IHSetShoreFor/__init__.py
+IHSetShoreFor/calibration.py
+IHSetShoreFor/shoreFor.py
+IHSetShoreFor.egg-info/PKG-INFO
+IHSetShoreFor.egg-info/SOURCES.txt
+IHSetShoreFor.egg-info/dependency_links.txt
+IHSetShoreFor.egg-info/requires.txt
+IHSetShoreFor.egg-info/top_level.txt
