@@ -172,7 +172,6 @@ class cal_ShoreFor(object):
         self.idx_calibration = idx
         self.P_splited = self.P[idx]
         self.Omega_splited = self.Omega[idx]
-        self.wast_splited = self.wast[idx]
         self.time_splited = self.time[idx]
 
         idx = np.where((self.time_obs >= self.start_date) & (self.time_obs <= self.end_date))
