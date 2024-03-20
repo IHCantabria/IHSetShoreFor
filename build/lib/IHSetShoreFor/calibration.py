@@ -25,7 +25,6 @@ class cal_ShoreFor(object):
         cfg = xr.open_dataset(path+'config.nc')
         wav = xr.open_dataset(path+'wav.nc')
         ens = xr.open_dataset(path+'ens.nc')
-        slv = xr.open_dataset(path+'sl.nc')
 
         self.cal_alg = cfg['cal_alg'].values
         self.metrics = cfg['metrics'].values
@@ -45,7 +44,7 @@ class cal_ShoreFor(object):
 
         self.Hs = wav['Hs'].values
         self.Tp = wav['Tp'].values
-        self.Dir = wav['Dirb'].values
+        self.Dir = wav['Dir'].values
 
         self.time = mkTime(wav['Y'].values, wav['M'].values, wav['D'].values, wav['h'].values)
         
