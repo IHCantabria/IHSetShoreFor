@@ -28,7 +28,7 @@ class cal_ShoreFor(object):
 
         self.cal_alg = cfg['cal_alg'].values
         self.metrics = cfg['metrics'].values
-        self.dt = cfg['dt'].values
+        self.dt = int(cfg['dt'].values)
         self.switch_Yini = cfg['switch_Yini'].values
         self.switch_D = cfg['switch_D'].values
         self.D50 = cfg['D50'].values

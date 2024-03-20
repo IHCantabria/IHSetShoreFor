@@ -7,7 +7,7 @@ def shoreFor(P, Omega, dt, phi=0, c=0, D=0, Sini=0):
     This function calculates the equilibrium profile and the profile evolution   
     
     '''
-
+    
     ii = np.arange(0, (D-1)*24, dt)
     phivecP = 10 ** (-np.abs(ii) / (phi * 24))
     IDX = len(phivecP)
