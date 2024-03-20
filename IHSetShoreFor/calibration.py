@@ -56,7 +56,7 @@ class cal_ShoreFor(object):
 
         self.P = self.Hs ** 2 * self.Tp
         self.ws = wMOORE(self.D50)
-        self.Omega = self.Hb / (self.ws * self.Tp)
+        self.Omega = self.Hs / (self.ws * self.Tp)
         
         self.split_data()
 
