@@ -11,7 +11,7 @@ def shoreFor(P, Omega, dt, phi=0, c=0, D=0, Sini=0):
     phivecP = 10 ** (-np.abs(ii) / (phi * 24))
     IDX = len(phivecP)
 
-    phivecP = np.hstack((np.zeros(IDX), phivecP))
+    # phivecP = np.hstack((np.zeros(IDX), phivecP))
 
     filter_c = phivecP / np.sum(phivecP)
 
