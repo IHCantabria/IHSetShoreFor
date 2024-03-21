@@ -31,6 +31,7 @@ class cal_ShoreFor(object):
         self.dt = int(cfg['dt'].values)
         self.switch_Yini = cfg['switch_Yini'].values
         self.switch_D = cfg['switch_D'].values
+        self.switch_r = cfg['switch_r'].values
         self.D50 = cfg['D50'].values
         
         if self.cal_alg == 'NSGAII':
@@ -69,7 +70,7 @@ class cal_ShoreFor(object):
         mkIdx = np.vectorize(lambda t: np.argmin(np.abs(self.time - t)))
         self.idx_obs = mkIdx(self.time_obs)
 
-        if self.switch_Yini == 0 and self.switch_D == 0:
+        if self.switch_Yini == 0 and self.switch_D == 0 and self.switch_r == 0:
             def model_simulation(par):
                 phi = par['phi']
                 c = par['c']
@@ -90,7 +91,7 @@ class cal_ShoreFor(object):
             ]
             self.model_sim = model_simulation
 
-        elif self.switch_Yini == 1 and self.switch_D == 0:
+        elif self.switch_Yini == 1 and self.switch_D == 0 and self.switch_r == 0:
             def model_simulation(par):
                 phi = par['phi']
                 c = par['c']
@@ -113,7 +114,7 @@ class cal_ShoreFor(object):
             ]
             self.model_sim = model_simulation
 
-        elif self.switch_Yini == 0 and self.switch_D == 1:
+        elif self.switch_Yini == 0 and self.switch_D == 1 and self.switch_r == 0:
             def model_simulation(par):
                 phi = par['phi']
                 c = par['c']
@@ -135,7 +136,7 @@ class cal_ShoreFor(object):
             ]
             self.model_sim = model_simulation
 
-        elif self.switch_Yini == 1 and self.switch_D == 1:
+        elif self.switch_Yini == 1 and self.switch_D == 1 and self.switch_r == 0:
             def model_simulation(par):
                 phi = par['phi']
                 c = par['c']
@@ -158,7 +159,112 @@ class cal_ShoreFor(object):
                 Uniform('Yini', np.min(self.Obs), (self.Obs))
             ]
             self.model_sim = model_simulation
+        
+        elif self.switch_Yini == 0 and self.switch_D == 0 and self.switch_r == 1:
+            def model_simulation(par):
+                phi = par['phi']
+                c = par['c']
+                D = 2 * phi
+                r = par['r']
+                
+                Ymd, _ = shoreFor(self.P_splited,
+                                    self.Omega_splited,
+                                    self.dt,
+                                    phi,
+                                    c,
+                                    D,
+                                    self.Yini,
+                                    flag_r=1,
+                                    parr=r)
+                return Ymd[self.idx_obs_splited]
+            
+            self.params = [
+                Uniform('phi', 3, 365),
+                Uniform('c', 1e-6, 1e-2),
+                Uniform('r', 0, 1)
+            ]
+            self.model_sim = model_simulation
 
+        elif self.switch_Yini == 1 and self.switch_D == 0 and self.switch_r == 1:
+            def model_simulation(par):
+                phi = par['phi']
+                c = par['c']
+                D = 2 * phi
+                r = par['r']
+                Yini = par['Yini']
+                
+                Ymd, _ = shoreFor(self.P_splited,
+                                    self.Omega_splited,
+                                    self.dt,
+                                    phi,
+                                    c,
+                                    D,
+                                    Yini,
+                                    flag_r=1,
+                                    parr=r)
+                return Ymd[self.idx_obs_splited]
+            
+            self.params = [
+                Uniform('phi', 3, 365),
+                Uniform('c', 1e-6, 1e-2),
+                Uniform('r', 0, 1),
+                Uniform('Yini', np.min(self.Obs), (self.Obs))
+            ]
+            self.model_sim = model_simulation
+
+        elif self.switch_Yini == 0 and self.switch_D == 1 and self.switch_r == 1:
+            def model_simulation(par):
+                phi = par['phi']
+                c = par['c']
+                D = par['D']
+                r = par['r']
+                
+                Ymd, _ = shoreFor(self.P_splited,
+                                    self.Omega_splited,
+                                    self.dt,
+                                    phi,
+                                    c,
+                                    D,
+                                    self.Yini,
+                                    flag_r=1,
+                                    parr=r)
+                return Ymd[self.idx_obs_splited]
+            
+            self.params = [
+                Uniform('phi', 3, 365),
+                Uniform('c', 1e-6, 1e-2),
+                Uniform('D', 6, 730),
+                Uniform('r', 0, 1)
+            ]
+            self.model_sim = model_simulation
+
+        elif self.switch_Yini == 1 and self.switch_D == 1 and self.switch_r == 1:
+            def model_simulation(par):
+                phi = par['phi']
+                c = par['c']
+                D = par['D']
+                r = par['r']
+                Yini = par['Yini']
+                
+                Ymd, _ = shoreFor(self.P_splited,
+                                    self.Omega_splited,
+                                    self.dt,
+                                    phi,
+                                    c,
+                                    D,
+                                    Yini,
+                                    flag_r=1,
+                                    parr=r)
+                return Ymd[self.idx_obs_splited]
+            
+            self.params = [
+                Uniform('phi', 3, 365),
+                Uniform('c', 1e-6, 1e-2),
+                Uniform('D', 6, 730),
+                Uniform('r', 0, 1),
+                Uniform('Yini', np.min(self.Obs), (self.Obs))
+            ]
+            self.model_sim = model_simulation
 
     def split_data(self):
         """

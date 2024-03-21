@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.signal import convolve
 
-def shoreFor(P, Omega, dt, phi=0, c=0, D=0, Sini=0):
+def shoreFor(P, Omega, dt, phi=0, c=0, D=0, Sini=0, flag_r=0, parr=0):
     '''
     This function calculates the equilibrium profile and the profile evolution   
     
@@ -27,7 +27,10 @@ def shoreFor(P, Omega, dt, phi=0, c=0, D=0, Sini=0):
     racr = F >= 0
     S[0] = Sini
 
-    r = np.abs(np.sum(F[racr]) / np.sum(F[rero]))
+    if flag_r == 0:
+        r = np.abs(np.sum(F[racr]) / np.sum(F[rero]))
+    else:
+        r = parr
 
     r_rero_F = r * rero[1:] * F[1:]
     racr_F = racr[1:] * F[1:]
