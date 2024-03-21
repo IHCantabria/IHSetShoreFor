@@ -1,5 +1,4 @@
 import numpy as np
-from numba import jit
 from scipy.signal import convolve
 
 def shoreFor(P, Omega, dt, phi=0, c=0, D=0, Sini=0):
@@ -14,9 +13,9 @@ def shoreFor(P, Omega, dt, phi=0, c=0, D=0, Sini=0):
 
     phivecP = np.hstack((np.zeros(IDX), phivecP))
 
-    window = phivecP / np.sum(phivecP)
+    filter_c = phivecP / np.sum(phivecP)
 
-    OmegaEQ = convolve(Omega - np.mean(Omega), window, mode='same') + np.mean(Omega)
+    OmegaEQ = convolve(Omega - np.mean(Omega), filter_c, mode='same') + np.mean(Omega)
 
     F = (P ** 0.5) * (OmegaEQ - Omega) / np.std(OmegaEQ)
 

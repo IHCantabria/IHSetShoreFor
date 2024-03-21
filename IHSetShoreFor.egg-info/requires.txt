@@ -1,6 +1,6 @@
 numpy
 xarray
-numba
+scipy
 datetime
 spotpy
 IHSetCalibration@ git+https://github.com/defreitasL/IHSetCalibration.git

@@ -2,13 +2,13 @@ from setuptools import setup, find_packages
 
 setup(
     name='IHSetShoreFor',
-    version='1.3.2',
+    version='1.3.3',
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
         'numpy',
         'xarray',
-        'numba',
+        'scipy',
         'datetime',
         'spotpy',
         'IHSetCalibration @ git+https://github.com/defreitasL/IHSetCalibration.git',
