@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.signal import convolve
 
-def shoreFor(P, Omega, dt, phi=0, c=0, D=0, Sini=0, flag_r=0, parr=0):
+def shoreFor(P, Omega, dt, phi=0, c=0, D=0, Sini=0, flag_r=0, cp=0, cm=0):
     '''
     This function calculates the equilibrium profile and the profile evolution   
     
@@ -29,13 +29,17 @@ def shoreFor(P, Omega, dt, phi=0, c=0, D=0, Sini=0, flag_r=0, parr=0):
 
     if flag_r == 0:
         r = np.abs(np.sum(F[racr]) / np.sum(F[rero]))
+        r_rero_F = r * rero[1:] * F[1:]
+        racr_F = racr[1:] * F[1:]
+        r_rero_F_prev = r * rero[:-1] * F[:-1]
+        racr_F_prev = racr[:-1] * F[:-1]
+        S[1:] = 0.5 * dt * c * np.cumsum(r_rero_F + racr_F + r_rero_F_prev + racr_F_prev) + S[0]
     else:
-        r = parr
-
-    r_rero_F = r * rero[1:] * F[1:]
-    racr_F = racr[1:] * F[1:]
-    r_rero_F_prev = r * rero[:-1] * F[:-1]
-    racr_F_prev = racr[:-1] * F[:-1]
-    S[1:] = 0.5 * dt * c * np.cumsum(r_rero_F + racr_F + r_rero_F_prev + racr_F_prev) + S[0]
+        r_rero_F = cm * rero[1:] * F[1:]
+        racr_F = racr[1:] * F[1:]
+        r_rero_F_prev = cp * rero[:-1] * F[:-1]
+        racr_F_prev = racr[:-1] * F[:-1]
+        S[1:] = 0.5 * dt * np.cumsum(r_rero_F + racr_F + r_rero_F_prev + racr_F_prev) + S[0]
+   
 
     return S, OmegaEQ
