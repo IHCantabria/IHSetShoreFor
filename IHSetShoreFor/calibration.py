@@ -163,9 +163,9 @@ class cal_ShoreFor(object):
         elif self.switch_Yini == 0 and self.switch_D == 0 and self.switch_r == 1:
             def model_simulation(par):
                 phi = par['phi']
-                c = par['c']
+                cp = par['cp']
+                cm = par['cm']
                 D = 2 * phi
-                r = par['r']
                 
                 Ymd, _ = shoreFor(self.P_splited,
                                     self.Omega_splited,
@@ -175,12 +175,14 @@ class cal_ShoreFor(object):
                                     D,
                                     self.Yini,
                                     flag_r=1,
-                                    parr=r)
+                                    cp=cp,
+                                    cm=cm)
                 return Ymd[self.idx_obs_splited]
             
             self.params = [
                 Uniform('phi', 3, 365),
-                Uniform('c', 1e-6, 1e-2),
+                Uniform('cp', 1e-6, 1e-2),
+                Uniform('cm', 1e-6, 1e-2),
                 Uniform('r', 0, 1)
             ]
             self.model_sim = model_simulation
@@ -188,25 +190,27 @@ class cal_ShoreFor(object):
         elif self.switch_Yini == 1 and self.switch_D == 0 and self.switch_r == 1:
             def model_simulation(par):
                 phi = par['phi']
-                c = par['c']
+                cp = par['cp']
+                cm = par['cm']
                 D = 2 * phi
-                r = par['r']
                 Yini = par['Yini']
                 
                 Ymd, _ = shoreFor(self.P_splited,
                                     self.Omega_splited,
                                     self.dt,
                                     phi,
-                                    c,
+                                    None,
                                     D,
                                     Yini,
                                     flag_r=1,
-                                    parr=r)
+                                    cp=cp,
+                                    cm=cm)
                 return Ymd[self.idx_obs_splited]
             
             self.params = [
                 Uniform('phi', 3, 365),
-                Uniform('c', 1e-6, 1e-2),
+                Uniform('cp', 1e-6, 1e-2),
+                Uniform('cm', 1e-6, 1e-2),
                 Uniform('r', 0, 1),
                 Uniform('Yini', np.min(self.Obs), (self.Obs))
             ]
@@ -215,24 +219,26 @@ class cal_ShoreFor(object):
         elif self.switch_Yini == 0 and self.switch_D == 1 and self.switch_r == 1:
             def model_simulation(par):
                 phi = par['phi']
-                c = par['c']
+                cp = par['cp']
+                cm = par['cm']
                 D = par['D']
-                r = par['r']
                 
                 Ymd, _ = shoreFor(self.P_splited,
                                     self.Omega_splited,
                                     self.dt,
                                     phi,
-                                    c,
+                                    None,
                                     D,
                                     self.Yini,
                                     flag_r=1,
-                                    parr=r)
+                                    cp=cp,
+                                    cm=cm)
                 return Ymd[self.idx_obs_splited]
             
             self.params = [
                 Uniform('phi', 3, 365),
-                Uniform('c', 1e-6, 1e-2),
+                Uniform('cp', 1e-6, 1e-2),
+                Uniform('cm', 1e-6, 1e-2),
                 Uniform('D', 6, 730),
                 Uniform('r', 0, 1)
             ]
@@ -241,25 +247,27 @@ class cal_ShoreFor(object):
         elif self.switch_Yini == 1 and self.switch_D == 1 and self.switch_r == 1:
             def model_simulation(par):
                 phi = par['phi']
-                c = par['c']
+                cp = par['cp']
+                cm = par['cm']
                 D = par['D']
-                r = par['r']
                 Yini = par['Yini']
                 
                 Ymd, _ = shoreFor(self.P_splited,
                                     self.Omega_splited,
                                     self.dt,
                                     phi,
-                                    c,
+                                    None,
                                     D,
                                     Yini,
                                     flag_r=1,
-                                    parr=r)
+                                    cp=cp,
+                                    cm=cm)
                 return Ymd[self.idx_obs_splited]
             
             self.params = [
                 Uniform('phi', 3, 365),
-                Uniform('c', 1e-6, 1e-2),
+                Uniform('cp', 1e-6, 1e-2),
+                Uniform('cm', 1e-6, 1e-2),
                 Uniform('D', 6, 730),
                 Uniform('r', 0, 1),
                 Uniform('Yini', np.min(self.Obs), (self.Obs))
