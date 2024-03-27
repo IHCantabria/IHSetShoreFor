@@ -29,9 +29,11 @@ def shoreFor(P, Omega, dt, phi=0, c=0, D=0, Sini=0, N = 365, flag_r=0, cp=0, cm=
     if flag_r == 0:
         
         # filter_r = np.hstack((np.zeros(int(N*24/dt)), np.ones(int(N*24/dt))))
-        filter_r = np.ones(int(N*24/dt))
-        F_plus = convolve(F * racr, filter_r, mode='same')
-        F_minus = convolve(F * rero, filter_r, mode='same')
+        # filter_r = np.ones(int(N*24/dt))
+        # F_plus = convolve(F * racr, filter_r, mode='same')
+        # F_minus = convolve(F * rero, filter_r, mode='same')
+        F_plus = np.sum(F * racr)
+        F_minus = np.sum(F * rero)
         r = np.absolute(F_plus / F_minus)
         r_rero_F = r[1:] * rero[1:] * F[1:]
         racr_F = racr[1:] * F[1:]
