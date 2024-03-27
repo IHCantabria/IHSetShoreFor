@@ -35,9 +35,11 @@ def shoreFor(P, Omega, dt, phi=0, c=0, D=0, Sini=0, N = 365, flag_r=0, cp=0, cm=
         F_plus = np.sum(F * racr)
         F_minus = np.sum(F * rero)
         r = np.absolute(F_plus / F_minus)
-        r_rero_F = r[1:] * rero[1:] * F[1:]
+        # r_rero_F = r[1:] * rero[1:] * F[1:]
+        r_rero_F = r * rero[1:] * F[1:]
         racr_F = racr[1:] * F[1:]
-        r_rero_F_prev = r[:-1] * rero[:-1] * F[:-1]
+        # r_rero_F_prev = r[:-1] * rero[:-1] * F[:-1]
+        r_rero_F_prev = r * rero[:-1] * F[:-1]
         racr_F_prev = racr[:-1] * F[:-1]
         S[1:] = 0.5 * dt * c * np.cumsum(r_rero_F + racr_F + r_rero_F_prev + racr_F_prev) + S[0]
     else:
