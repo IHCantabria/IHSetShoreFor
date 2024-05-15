@@ -316,7 +316,7 @@ class cal_ShoreFor(object):
         # Validation
         idx = np.where((self.time_obs < self.start_date) | (self.time_obs > self.end_date))
         self.idx_validation_obs = idx[0]
-        if len(self.idx_validation)>0:
+        if len(self.idx_validation)>1:
             mkIdx = np.vectorize(lambda t: np.argmin(np.abs(self.time[self.idx_validation] - t)))
             if len(self.idx_validation_obs)>0:
                 self.idx_validation_for_obs = mkIdx(self.time_obs[idx])
