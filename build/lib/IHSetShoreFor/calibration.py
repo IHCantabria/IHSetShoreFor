@@ -78,14 +78,6 @@ class cal_ShoreFor(object):
         mkIdx = np.vectorize(lambda t: np.argmin(np.abs(self.time - t)))
         self.idx_obs = mkIdx(self.time_obs)
 
-        over_length = len(np.arange(1, (self.phi*2*24)+1, self.dt))
-
-        self.idx_obs = self.idx_obs[self.idx_obs>over_length]
-        self.idx_obs_splited = self.idx_obs_splited[self.idx_obs_splited>over_length]
-        self.Obs_splited = self.Obs_splited[over_length:]
-        self.time_obs_splited = self.time_obs_splited[over_length:]
-        self.observations = self.Obs_splited
-
         if self.switch_Yini == 0:
             self.Yini = self.Obs_splited[0]
 

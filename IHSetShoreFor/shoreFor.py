@@ -28,5 +28,6 @@ def shoreFor(P, Omega, dt, phi=0, D=0, Sini=0, cp=0, cm=0):
 
     S[IDX+1:] = 0.5 * dt * np.cumsum(rero_F + racr_F + rero_F_prev + racr_F_prev) + S[IDX]
    
+    S[0:IDX-1] = Sini
 
     return S, OmegaEQ
