@@ -4,7 +4,7 @@ from datetime import datetime
 from spotpy.parameter import Uniform
 from .shoreFor import shoreFor
 from IHSetCalibration import objective_functions
-from IHSetUtils import wMOORE
+from IHSetUtils import wMOORE, BreakingPropagation
 
 class cal_ShoreFor(object):
     """
@@ -31,8 +31,12 @@ class cal_ShoreFor(object):
         self.dt = int(cfg['dt'].values)
         self.switch_Yini = cfg['switch_Yini'].values
         self.switch_D = cfg['switch_D'].values
+        self.switch_brk = cfg['switch_brk'].values
         # self.switch_r = cfg['switch_r'].values
         self.D50 = cfg['D50'].values
+        self.depth = cfg['depth'].values
+        self.bathy_angle = cfg['bathy_angle'].values
+        self.breaking_type = cfg['breaking_type'].values
         
         if self.cal_alg == 'NSGAII':
             self.n_pop = cfg['n_pop'].values
@@ -47,6 +51,11 @@ class cal_ShoreFor(object):
         self.Tp = wav['Tp'].values
         self.Dir = wav['Dir'].values
 
+        if self.switch_brk == 0:
+            self.Hb = self.Hs
+        else:
+            self.Hb = BreakingPropagation(self.Hs, self.Tp, self.Dir, self.depth, self.bathy_angle, self.breaking_type)
+
         self.time = mkTime(wav['Y'].values, wav['M'].values, wav['D'].values, wav['h'].values)
         
         self.Obs = ens['Obs'].values
@@ -55,7 +64,7 @@ class cal_ShoreFor(object):
         self.start_date = datetime(int(cfg['Ysi'].values), int(cfg['Msi'].values), int(cfg['Dsi'].values))
         self.end_date = datetime(int(cfg['Ysf'].values), int(cfg['Msf'].values), int(cfg['Dsf'].values))
 
-        self.P = self.Hs ** 2 * self.Tp
+        self.P = self.Hb ** 2 * self.Tp
         self.ws = wMOORE(self.D50)
         self.Omega = self.Hs / (self.ws * self.Tp)
         
@@ -74,6 +83,7 @@ class cal_ShoreFor(object):
         self.idx_obs_splited = self.idx_obs_splited[self.idx_obs_splited>over_length]
         self.Obs_splited = self.Obs_splited[over_length:]
         self.time_obs_splited = self.time_obs_splited[over_length:]
+        self.observations = self.Obs_splited
 
         if self.switch_Yini == 0:
             self.Yini = self.Obs_splited[0]
@@ -206,7 +216,7 @@ class cal_ShoreFor(object):
 
         mkIdx = np.vectorize(lambda t: np.argmin(np.abs(self.time_splited - t)))
         self.idx_obs_splited = mkIdx(self.time_obs_splited)
-        self.observations = self.Obs_splited
+        
 
         # Validation
         idx = np.where((self.time_obs < self.start_date) | (self.time_obs > self.end_date))[0]
