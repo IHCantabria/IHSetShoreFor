@@ -206,6 +206,7 @@ class cal_ShoreFor(object):
 
         self.Obs_splited = self.Obs[idx]
         self.time_obs_splited = self.time_obs[idx]
+        self.observations = self.Obs_splited
 
         mkIdx = np.vectorize(lambda t: np.argmin(np.abs(self.time_splited - t)))
         self.idx_obs_splited = mkIdx(self.time_obs_splited)
