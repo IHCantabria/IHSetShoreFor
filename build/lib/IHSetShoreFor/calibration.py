@@ -34,9 +34,7 @@ class cal_ShoreFor(object):
         self.switch_brk = cfg['switch_brk'].values
         # self.switch_r = cfg['switch_r'].values
         self.D50 = cfg['D50'].values
-        self.depth = cfg['depth'].values
-        self.bathy_angle = cfg['bathy_angle'].values
-        self.breaking_type = cfg['breaking_type'].values
+        
         
         if self.cal_alg == 'NSGAII':
             self.n_pop = cfg['n_pop'].values
@@ -54,6 +52,9 @@ class cal_ShoreFor(object):
         if self.switch_brk == 0:
             self.Hb = self.Hs
         else:
+            self.depth = np.zeros_like(self.Hs) + cfg['depth'].values
+            self.bathy_angle = cfg['bathy_angle'].values
+            self.breaking_type = cfg['breaking_type'].values
             self.Hb = BreakingPropagation(self.Hs, self.Tp, self.Dir, self.depth, self.bathy_angle, self.breaking_type)
 
         self.time = mkTime(wav['Y'].values, wav['M'].values, wav['D'].values, wav['h'].values)
