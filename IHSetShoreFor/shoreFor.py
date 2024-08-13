@@ -5,12 +5,13 @@ def shoreFor(P, Omega, dt, phi, D, cp, cm, Sini, idx = None):
     '''
     This function apply the ShoreFor (Davidson et al. 2013) model   
     '''
-    
-    ii = np.arange(1, (D*24)+1, dt)
-    filter = 10 ** (-np.abs(ii) / (phi * 24))
+
+    ii = np.arange(0, ((D*24)/dt), dt)
+    filter = 10 ** (-ii / (phi * 24))
+
     OmegaEQ = convolve(Omega, filter, mode='same')
     OmegaEQ = OmegaEQ / np.sum(filter)
-    F = (P ** 0.5) * (OmegaEQ - Omega) / np.std(OmegaEQ)
+    F = (P ** 0.5) * (OmegaEQ - Omega) # / np.std(OmegaEQ)
     IDX = len(filter)
     F[:IDX - 1] = np.nan
 
