@@ -78,8 +78,8 @@ class cal_ShoreFor(object):
         mkIdx = np.vectorize(lambda t: np.argmin(np.abs(self.time - t)))
         self.idx_obs = mkIdx(self.time_obs)
 
-        if self.switch_Yini == 0:
-            self.Yini = self.Obs_splited[0]
+        # if self.switch_Yini == 0:
+        #     self.Yini = self.Obs_splited[0]
 
         if self.switch_Yini == 0 and self.switch_D == 0:
             def model_simulation(par):
@@ -93,9 +93,10 @@ class cal_ShoreFor(object):
                                     self.dt,
                                     phi,
                                     D,
-                                    self.Yini, 
                                     cp,
-                                    cm)
+                                    cm,
+                                    self.observations,
+                                    self.idx_obs_splited)
                 return Ymd[self.idx_obs_splited]
             
             self.params = [
@@ -118,9 +119,9 @@ class cal_ShoreFor(object):
                                     self.dt,
                                     phi,
                                     D,
-                                    Yini, 
                                     cp,
-                                    cm)
+                                    cm,
+                                    Yini)
                 return Ymd[self.idx_obs_splited]
             
             self.params = [
@@ -144,9 +145,10 @@ class cal_ShoreFor(object):
                                     self.dt,
                                     phi,
                                     D,
-                                    self.Yini, 
                                     cp,
-                                    cm)
+                                    cm,
+                                    self.observations,
+                                    self.idx_obs_splited)
                 return Ymd[self.idx_obs_splited]
             
             self.params = [
@@ -164,15 +166,17 @@ class cal_ShoreFor(object):
                 cm = par['cm']
                 D = par['D']
                 Yini = par['Yini']
+
+
                                 
                 Ymd, _ = shoreFor(self.P_splited,
                                     self.Omega_splited,
                                     self.dt,
                                     phi,
                                     D,
-                                    Yini, 
                                     cp,
-                                    cm)
+                                    cm,
+                                    Yini)
                 return Ymd[self.idx_obs_splited]
             
             self.params = [

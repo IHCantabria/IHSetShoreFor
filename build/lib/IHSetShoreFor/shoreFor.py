@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.signal import convolve
 
-def shoreFor(P, Omega, dt, phi=0, D=0, Sini=0, cp=0, cm=0):
+def shoreFor(P, Omega, dt, phi, D, cp, cm, Sini, idx = None):
     '''
     This function apply the ShoreFor (Davidson et al. 2013) model   
     '''
@@ -18,7 +18,12 @@ def shoreFor(P, Omega, dt, phi=0, D=0, Sini=0, cp=0, cm=0):
 
     rero = F < 0
     racr = F >= 0
-    S[IDX] = Sini
+
+    if len(Sini) == 1:
+        S[IDX] = Sini
+    else:
+        minidx = np.argmin(np.abs(idx - len(ii)))
+        S[IDX] = Sini[minidx]
 
     rero_F = cm * rero[IDX+1:] * F[IDX+1:]
     racr_F = cp * racr[IDX+1:] * F[IDX+1:]
