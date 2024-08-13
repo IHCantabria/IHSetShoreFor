@@ -55,7 +55,7 @@ class cal_ShoreFor(object):
             self.depth = np.zeros_like(self.Hs) + cfg['depth'].values
             self.bathy_angle = np.zeros_like(self.Hs) + cfg['bathy_angle'].values
             self.breaking_type = cfg['breaking_type'].values
-            self.Hb = BreakingPropagation(self.Hs, self.Tp, self.Dir, self.depth, self.bathy_angle, self.breaking_type)
+            self.Hb, _, _ = BreakingPropagation(self.Hs, self.Tp, self.Dir, self.depth, self.bathy_angle, self.breaking_type)
 
         self.time = mkTime(wav['Y'].values, wav['M'].values, wav['D'].values, wav['h'].values)
         
