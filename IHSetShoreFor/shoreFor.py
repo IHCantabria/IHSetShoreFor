@@ -13,7 +13,7 @@ def shoreFor(P, Omega, dt, phi, D, cp, cm, Sini, idx = None):
     OmegaEQ = convolve(Omega, filter, mode='valid')
     OmegaEQ = OmegaEQ / np.sum(filter)
     F = np.full(len(P), np.nan)
-    F[IDX:] = (P[IDX:] ** 0.5) * (OmegaEQ - Omega) # / np.std(OmegaEQ)
+    F[IDX:] = (P[IDX:] ** 0.5) * (OmegaEQ - Omega[IDX:]) # / np.std(OmegaEQ)
 
     S = np.full(len(P), np.nan)
 
