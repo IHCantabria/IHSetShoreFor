@@ -9,7 +9,7 @@ def shoreFor(P, Omega, dt, phi, D, cp, cm, Sini, idx = None):
     ii = np.arange(0, ((D*24)/dt), dt)
     filter = 10 ** (-ii / (phi * 24))
 
-    OmegaEQ = convolve(Omega, filter, mode='same')
+    OmegaEQ = convolve(Omega, filter, mode='valid')
     OmegaEQ = OmegaEQ / np.sum(filter)
     F = (P ** 0.5) * (OmegaEQ - Omega) # / np.std(OmegaEQ)
     IDX = len(filter)
@@ -32,7 +32,7 @@ def shoreFor(P, Omega, dt, phi, D, cp, cm, Sini, idx = None):
     rero_F_prev = cm * rero[IDX:-1] * F[IDX:-1]
     racr_F_prev = cp * racr[IDX:-1] * F[IDX:-1]
 
-    S[IDX+1:] = 0.5 * dt * np.cumsum(rero_F + racr_F + rero_F_prev + racr_F_prev) + S[IDX]
+    S[IDX+1:] = dt * np.cumsum(rero_F + racr_F) + S[IDX] #☻ + rero_F_prev + racr_F_prev
    
     S[0:IDX-1] = S[IDX]
 
