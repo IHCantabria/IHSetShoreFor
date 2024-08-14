@@ -8,7 +8,7 @@ def shoreFor(P, Omega, dt, phi, D, cp, cm, Sini, idx = None):
 
     ii = np.arange(0, ((D*24)/dt), dt)
     filter = 10 ** (-ii / (phi * 24))
-    IDX = len(filter)
+    IDX = len(filter) - 1
 
     OmegaEQ = convolve(Omega, filter, mode='valid')
     OmegaEQ = OmegaEQ / np.sum(filter)
