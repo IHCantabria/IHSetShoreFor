@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='IHSetShoreFor',
-    version='1.6.8',
+    version='1.7.0',
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
@@ -11,8 +11,10 @@ setup(
         'scipy',
         'datetime',
         'spotpy',
+        'pandas',
         'IHSetCalibration @ git+https://github.com/defreitasL/IHSetCalibration.git',
-        'IHSetUtils @ git+https://github.com/IHCantabria/IHSetUtils.git'
+        'IHSetUtils @ git+https://github.com/IHCantabria/IHSetUtils.git',
+        'fast_optimization @ git+https://github.com/defreitasL/fast_optimization.git'
     ],
     author='Lucas de Freitas Pereira',
     author_email='lucas.defreitas@unican.es',

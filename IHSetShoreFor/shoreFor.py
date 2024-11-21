@@ -6,6 +6,8 @@ def shoreFor(P, Omega, dt, phi, D, cp, cm, Sini, idx = None):
     This function apply the ShoreFor (Davidson et al. 2013) model   
     '''
 
+    dt = np.mean(dt)
+
     ii = np.arange(0, ((D*24)/dt), dt)
     filter = 10 ** (-ii / (phi * 24))
     IDX = len(filter) - 1
@@ -29,8 +31,8 @@ def shoreFor(P, Omega, dt, phi, D, cp, cm, Sini, idx = None):
     rero_F = cm * rero[IDX+1:] * F[IDX+1:]
     racr_F = cp * racr[IDX+1:] * F[IDX+1:]
 
-    rero_F_prev = cm * rero[IDX:-1] * F[IDX:-1]
-    racr_F_prev = cp * racr[IDX:-1] * F[IDX:-1]
+    # rero_F_prev = cm * rero[IDX:-1] * F[IDX:-1]
+    # racr_F_prev = cp * racr[IDX:-1] * F[IDX:-1]
 
     S[IDX+1:] = dt * np.cumsum(rero_F + racr_F) + S[IDX] #☻ + rero_F_prev + racr_F_prev
    

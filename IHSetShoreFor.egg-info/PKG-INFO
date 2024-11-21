@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: IHSetShoreFor
-Version: 1.6.8
+Version: 1.7.0
 Summary: IH-SET Miller and Dean (2004)
 Home-page: https://github.com/defreitasL/IHSetShoreFor
 Author: Lucas de Freitas Pereira
@@ -19,5 +19,7 @@ Requires-Dist: xarray
 Requires-Dist: scipy
 Requires-Dist: datetime
 Requires-Dist: spotpy
+Requires-Dist: pandas
 Requires-Dist: IHSetCalibration@ git+https://github.com/defreitasL/IHSetCalibration.git
 Requires-Dist: IHSetUtils@ git+https://github.com/IHCantabria/IHSetUtils.git
+Requires-Dist: fast_optimization@ git+https://github.com/defreitasL/fast_optimization.git
