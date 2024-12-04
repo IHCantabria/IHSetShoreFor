@@ -88,7 +88,7 @@ class ShoreFor_run(object):
                 cp = par[1]
                 cm = par[2]
                 D = par[3]
-                Yini = par[4]
+                Yini = [par[4]]
 
                 Ymd, _ = shoreFor(self.P,
                                     self.Omega,
@@ -116,7 +116,7 @@ class ShoreFor_run(object):
                                     D,
                                     cp,
                                     cm,
-                                    self.observations,
+                                    self.Obs,
                                     self.idx_obs)
 
                 return Ymd
@@ -129,7 +129,7 @@ class ShoreFor_run(object):
                 cp = par[1]
                 cm = par[2]
                 D = 2 * phi
-                Yini = par[4]
+                Yini = [par[4]]
 
                 Ymd, _ = shoreFor(self.P,
                                     self.Omega,
@@ -158,7 +158,7 @@ class ShoreFor_run(object):
                                     D,
                                     cp,
                                     cm,
-                                    self.observations,
+                                    self.Obs,
                                     self.idx_obs)
                 return Ymd
             
@@ -172,7 +172,7 @@ class ShoreFor_run(object):
         self.metrics_names = fo.backtot()[0]
         self.indexes = fo.multi_obj_indexes(self.metrics_names)
         self.metrics = fo.multi_obj_func(self.Obs, self.full_run[self.idx_obs], self.indexes)
-          
+
     def split_data(self):
         """
         Split the data into calibration and validation datasets.

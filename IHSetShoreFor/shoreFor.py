@@ -23,7 +23,7 @@ def shoreFor(P, Omega, dt, phi, D, cp, cm, Sini, idx = None):
     racr = F >= 0
 
     if len(Sini) == 1:
-        S[IDX] = Sini
+        S[IDX] = Sini[0]
     else:
         minidx = np.argmin(np.abs(idx - len(ii)))
         S[IDX] = Sini[minidx]
