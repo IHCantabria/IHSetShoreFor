@@ -337,5 +337,11 @@ class cal_ShoreFor_2(object):
         """
         self.solution, self.objectives, self.hist = self.calibr_cfg.calibrate(self)
 
-        if self.switch_D == 0:
-            self.solution[3] = 2 * self.solution[0]
+        if self.switch_D == 0 and self.switch_Yini == 0:
+            self.solution = np.array([self.solution[0], np.exp(self.solution[1]), np.exp(self.solution[2])])
+            self.solution = np.hstack((self.solution, 2*self.solution[0]))
+        
+        elif self.switch_D == 0 and self.switch_Yini == 1:
+            self.solution = np.array([self.solution[0], np.exp(self.solution[1]), np.exp(self.solution[2])])
+            self.solution = np.hstack((self.solution, 2*self.solution[0]))
+            self.solution = np.hstack((self.solution, self.solution[3]))
