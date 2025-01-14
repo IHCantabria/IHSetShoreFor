@@ -336,3 +336,6 @@ class cal_ShoreFor_2(object):
         Calibrate the model.
         """
         self.solution, self.objectives, self.hist = self.calibr_cfg.calibrate(self)
+
+        if self.switch_D == 0:
+            self.solution[3] = 2 * self.solution[0]
