@@ -2,17 +2,14 @@ from setuptools import setup, find_packages
 
 setup(
     name='IHSetShoreFor',
-    version='1.7.7',
+    version='1.7.9',
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
         'numpy',
         'xarray',
         'scipy',
-        'datetime',
-        'spotpy',
         'pandas',
-        'IHSetCalibration @ git+https://github.com/defreitasL/IHSetCalibration.git',
         'IHSetUtils @ git+https://github.com/IHCantabria/IHSetUtils.git',
         'fast_optimization @ git+https://github.com/defreitasL/fast_optimization.git'
     ],
