@@ -338,6 +338,8 @@ class cal_ShoreFor_2(object):
         """
         self.solution, self.objectives, self.hist = self.calibr_cfg.calibrate(self)
 
+        self.full_run = self.run_model(self.solution)
+
         if self.switch_D == 0 and self.switch_Yini == 0:
             self.solution = np.array([self.solution[0], self.solution[1], self.solution[2]])
             self.solution = np.hstack((self.solution, 2*self.solution[0]))
