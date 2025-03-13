@@ -19,6 +19,8 @@ class ShoreFor_run(object):
 
         self.path = path
         self.name = 'ShoreFor (Davidson et al., 2013)'
+        self.mode = 'standalone'
+        self.type = 'CS'
      
         data = xr.open_dataset(path)
         

@@ -19,6 +19,8 @@ class cal_ShoreFor_2(object):
 
         self.path = path
         self.name = 'ShoreFor (Davidson et al., 2013)'
+        self.mode = 'calibration'
+        self.type = 'CS'
      
         data = xr.open_dataset(path)
         
