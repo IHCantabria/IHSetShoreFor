@@ -18,6 +18,7 @@ class ShoreFor_run(object):
     def __init__(self, path):
 
         self.path = path
+        self.name = 'ShoreFor(Davidson et al., 2013)'
      
         data = xr.open_dataset(path)
         
@@ -166,6 +167,19 @@ class ShoreFor_run(object):
         
     def run(self, par):
         self.full_run = self.run_model(par)
+        if self.switch_Yini == 1 and self.switch_D == 1:
+            self.par_names = [rf'$\phi$', rf'$c_a$', rf'$c_e$']
+            self.par_values = par
+        elif self.switch_Yini == 0 and self.switch_D == 1:
+            self.par_names = [rf'$\phi$', rf'$c_a$', rf'$c_e$', rf'$Y_i$']
+            self.par_values = par
+        elif self.switch_Yini == 1 and self.switch_D == 0:
+            self.par_names = [rf'$\phi$', rf'$c_a$', rf'$c_e$', rf'$D$']
+            self.par_values = par
+        elif self.switch_Yini == 0 and self.switch_D == 0:
+            self.par_names = [rf'$\phi$', rf'$c_a$', rf'$c_e$', rf'$D$', rf'$Y_i$']
+            self.par_values = par
+
         self.calculate_metrics()
 
     def calculate_metrics(self):

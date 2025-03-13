@@ -18,6 +18,7 @@ class cal_ShoreFor_2(object):
     def __init__(self, path):
 
         self.path = path
+        self.name = 'ShoreFor(Davidson et al., 2013)'
      
         data = xr.open_dataset(path)
         
@@ -340,8 +341,31 @@ class cal_ShoreFor_2(object):
         if self.switch_D == 0 and self.switch_Yini == 0:
             self.solution = np.array([self.solution[0], self.solution[1], self.solution[2]])
             self.solution = np.hstack((self.solution, 2*self.solution[0]))
-        
+            self.par_names = [rf'$\phi$', rf'$c_a$', rf'$c_e$', rf'$D$']
+            self.par_values = self.solution.copy()
+            self.par_values[1] = np.exp(self.par_values[1])
+            self.par_values[2] = np.exp(self.par_values[2])
+       
         elif self.switch_D == 0 and self.switch_Yini == 1:
             self.solution = np.array([self.solution[0], self.solution[1], self.solution[2]])
             self.solution = np.hstack((self.solution, 2*self.solution[0]))
             self.solution = np.hstack((self.solution, self.solution[3]))
+            self.par_names = [rf'$\phi$', rf'$c_a$', rf'$c_e$', rf'$D$', rf'$Y_i$']
+            self.par_values = self.solution.copy()
+            self.par_values[1] = np.exp(self.par_values[1])
+            self.par_values[2] = np.exp(self.par_values[2])
+
+        elif self.switch_D == 1 and self.switch_Yini == 0:
+            self.par_names = [rf'$\phi$', rf'$c_a$', rf'$c_e$', rf'$D$']
+            self.par_values = self.solution.copy()
+            self.par_values[1] = np.exp(self.par_values[1])
+            self.par_values[2] = np.exp(self.par_values[2])
+
+        elif self.switch_D == 1 and self.switch_Yini == 1:
+            self.par_names = [rf'$\phi$', rf'$c_a$', rf'$c_e$', rf'$D$', rf'$Y_i$']
+            self.par_values = self.solution.copy()
+            self.par_values[1] = np.exp(self.par_values[1])
+            self.par_values[2] = np.exp(self.par_values[2])
+
+
+        
