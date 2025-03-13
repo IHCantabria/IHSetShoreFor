@@ -18,7 +18,7 @@ class ShoreFor_run(object):
     def __init__(self, path):
 
         self.path = path
-        self.name = 'ShoreFor(Davidson et al., 2013)'
+        self.name = 'ShoreFor (Davidson et al., 2013)'
      
         data = xr.open_dataset(path)
         
