@@ -25,6 +25,7 @@ class cal_ShoreFor_2(object):
         data = xr.open_dataset(path)
         
         cfg = json.loads(data.attrs['ShoreFor'])
+        self.cfg = cfg
 
         self.cal_alg = cfg['cal_alg']
         self.metrics = cfg['metrics']

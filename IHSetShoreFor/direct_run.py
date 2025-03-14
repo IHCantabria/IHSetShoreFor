@@ -25,6 +25,7 @@ class ShoreFor_run(object):
         data = xr.open_dataset(path)
         
         cfg = json.loads(data.attrs['run_ShoreFor'])
+        self.cfg = cfg
 
         self.switch_Yini = cfg['switch_Yini']
         self.switch_D = cfg['switch_D']
