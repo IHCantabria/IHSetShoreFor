@@ -171,16 +171,16 @@ class ShoreFor_run(object):
     def run(self, par):
         self.full_run = self.run_model(par)
         if self.switch_Yini == 1 and self.switch_D == 1:
-            self.par_names = [r'$\phi$', r'$c_a$', r'$c_e$']
+            self.par_names = [r'phi', r'c_a', r'c_e']
             self.par_values = par
         elif self.switch_Yini == 0 and self.switch_D == 1:
-            self.par_names = [r'$\phi$', r'$c_a$', r'$c_e$', r'$Y_i$']
+            self.par_names = [r'phi', r'c_a', r'c_e', r'Y_i']
             self.par_values = par
         elif self.switch_Yini == 1 and self.switch_D == 0:
-            self.par_names = [r'$\phi$', r'$c_a$', r'$c_e$', r'$D$']
+            self.par_names = [r'phi', r'c_a', r'c_e', r'D']
             self.par_values = par
         elif self.switch_Yini == 0 and self.switch_D == 0:
-            self.par_names = [r'$\phi$', r'$c_a$', r'$c_e$', r'$D$', r'$Y_i$']
+            self.par_names = [r'phi', r'c_a', r'c_e', r'D', r'Y_i']
             self.par_values = par
 
         self.calculate_metrics()
