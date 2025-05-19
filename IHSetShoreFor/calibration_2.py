@@ -118,7 +118,7 @@ class cal_ShoreFor_2(object):
                 phi = par[0]
                 cp = np.exp(par[1])
                 cm = np.exp(par[2])
-                D = par[3]
+                D = 2 * phi
 
                 Ymd, _ = shoreFor(self.P,
                                     self.Omega,
@@ -168,8 +168,8 @@ class cal_ShoreFor_2(object):
                 phi = par[0]
                 cp = np.exp(par[1])
                 cm = np.exp(par[2])
-                D = par[3]
-                Yini = [par[4]]
+                D = 2 * phi
+                Yini = [par[3]]
 
                 Ymd, _ = shoreFor(self.P,
                                     self.Omega,
