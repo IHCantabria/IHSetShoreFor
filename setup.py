@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='IHSetShoreFor',
-    version='1.8.8',
+    version='1.8.9',
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
@@ -10,6 +10,7 @@ setup(
         'xarray',
         'scipy',
         'pandas',
+        'numba',
         'IHSetUtils @ git+https://github.com/IHCantabria/IHSetUtils.git',
         'fast_optimization @ git+https://github.com/defreitasL/fast_optimization.git'
     ],

@@ -1,41 +1,51 @@
 import numpy as np
-from scipy.signal import convolve
+from numba import njit
 
-def shoreFor(P, Omega, dt, phi, D, cp, cm, Sini, idx = None):
+@njit(nopython=True, fastmath=True)
+def shoreFor(P, Omega, dt_arr, phi, D, cp, cm, Sini, idx_arr):
     '''
     This function apply the ShoreFor (Davidson et al. 2013) model   
     '''
-
-    dt = np.mean(dt)
-
-    ii = np.arange(0, ((D*24)/dt), dt)
-    filter = 10 ** (-ii / (phi * 24))
-    IDX = len(filter) - 1
-
-    OmegaEQ = convolve(Omega, filter, mode='valid')
-    OmegaEQ = OmegaEQ / np.sum(filter)
-    F = np.full(len(P), np.nan)
-    F[IDX:] = (P[IDX:] ** 0.5) * (OmegaEQ - Omega[IDX:]) # / np.std(OmegaEQ)
-
-    S = np.full(len(P), np.nan)
-
-    rero = F < 0
-    racr = F >= 0
-
-    if len(Sini) == 1:
-        S[IDX] = Sini[0]
+    dt = np.mean(dt_arr)
+    tau = phi * 24.0
+    alpha = np.exp(-np.log(10.0) * dt / tau)
+    n = P.shape[0]
+    IDX = int(np.floor(D * 24.0 / dt))
+    
+    OmegaEQ_full = np.empty(n)
+    OmegaEQ_full[0] = Omega[0]
+    for i in range(1, n):
+        OmegaEQ_full[i] = alpha * OmegaEQ_full[i-1] + (1.0 - alpha) * Omega[i]
+    
+    F = np.empty(n)
+    for i in range(n):
+        F[i] = np.nan
+    for i in range(IDX, n):
+        F[i] = np.sqrt(P[i]) * (OmegaEQ_full[i] - Omega[i])
+    
+    S = np.empty(n)
+    for i in range(n):
+        S[i] = np.nan
+    
+    if Sini.size == 1:
+        S0 = Sini[0]
     else:
-        minidx = np.argmin(np.abs(idx - len(ii)))
-        S[IDX] = Sini[minidx]
-
-    rero_F = cm * rero[IDX+1:] * F[IDX+1:]
-    racr_F = cp * racr[IDX+1:] * F[IDX+1:]
-
-    # rero_F_prev = cm * rero[IDX:-1] * F[IDX:-1]
-    # racr_F_prev = cp * racr[IDX:-1] * F[IDX:-1]
-
-    S[IDX+1:] = dt * np.cumsum(rero_F + racr_F) + S[IDX] #☻ + rero_F_prev + racr_F_prev
-   
-    S[0:IDX-1] = S[IDX]
-
-    return S, OmegaEQ
+        target = D * 24.0 / dt
+        best = 0
+        mind = abs(idx_arr[0] - target)
+        for j in range(idx_arr.size):
+            d = abs(idx_arr[j] - target)
+            if d < mind:
+                mind = d
+                best = j
+        S0 = Sini[best]
+    S[IDX] = S0
+    
+    for i in range(IDX+1, n):
+        inc = cm * (F[i] < 0) * F[i] + cp * (F[i] >= 0) * F[i]
+        S[i] = S[i-1] + dt * inc
+    
+    for i in range(IDX):
+        S[i] = S0
+    
+    return S, OmegaEQ_full
