@@ -2,7 +2,7 @@ import numpy as np
 import xarray as xr
 import fast_optimization as fo
 import pandas as pd
-from .shoreFor import shoreFor
+from .shoreFor import shoreFor_idx_Yini, shoreFor_Yini
 import json
 from IHSetUtils import wMOORE, BreakingPropagation
 from scipy.stats import circmean
@@ -94,7 +94,7 @@ class ShoreFor_run(object):
                 D = par[3]
                 Yini = [par[4]]
 
-                Ymd, _ = shoreFor(self.P,
+                Ymd, _ = shoreFor_Yini(self.P,
                                     self.Omega,
                                     self.dt,
                                     phi,
@@ -113,7 +113,7 @@ class ShoreFor_run(object):
                 cm = par[2]
                 D = par[3]
 
-                Ymd, _ = shoreFor(self.P,
+                Ymd, _ = shoreFor_idx_Yini(self.P,
                                     self.Omega,
                                     self.dt,
                                     phi,
@@ -135,7 +135,7 @@ class ShoreFor_run(object):
                 D = 2 * phi
                 Yini = [par[4]]
 
-                Ymd, _ = shoreFor(self.P,
+                Ymd, _ = shoreFor_Yini(self.P,
                                     self.Omega,
                                     self.dt,
                                     phi,
@@ -155,7 +155,7 @@ class ShoreFor_run(object):
                 cm = par[2]
                 D = 2 * phi
 
-                Ymd, _ = shoreFor(self.P,
+                Ymd, _ = shoreFor_idx_Yini(self.P,
                                     self.Omega,
                                     self.dt,
                                     phi,
