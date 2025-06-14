@@ -32,9 +32,8 @@ class ShoreFor_run(object):
         self.D50 = cfg['D50']
         self.switch_brk = cfg['switch_brk']
         if self.switch_brk == 1:
-            self.bathy_angle = cfg['bathy_angle']
             self.breakType = cfg['break_type']
-            self.depth = cfg['depth']
+
 
 
         if cfg['trs'] == 'Average':
@@ -46,6 +45,8 @@ class ShoreFor_run(object):
             self.Obs = self.Obs[~data.mask_nan_average_obs]
             self.time_obs = pd.to_datetime(data.time_obs.values)
             self.time_obs = self.time_obs[~data.mask_nan_average_obs]
+            self.depth = np.mean(data.waves_depth.values)
+            self.bathy_angle = circmean(data.phi.values, high=360, low=0)
         else:
             self.hs = data.hs.values[:, cfg['trs']]
             self.tp = data.tp.values[:, cfg['trs']]
@@ -55,6 +56,8 @@ class ShoreFor_run(object):
             self.Obs = self.Obs[~data.mask_nan_obs[:, cfg['trs']]]
             self.time_obs = pd.to_datetime(data.time_obs.values)
             self.time_obs = self.time_obs[~data.mask_nan_obs[:, cfg['trs']]]
+            self.depth = data.waves_depth.values[cfg['trs']]
+            self.bathy_angle = data.phi.values[cfg['trs']]
         
         self.start_date = pd.to_datetime(cfg['start_date'])
         self.end_date = pd.to_datetime(cfg['end_date'])

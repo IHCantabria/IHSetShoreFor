@@ -36,9 +36,7 @@ class cal_ShoreFor_2(object):
         self.D50 = cfg['D50']
         self.switch_brk = cfg['switch_brk']
         if self.switch_brk == 1:
-            self.bathy_angle = cfg['bathy_angle']
             self.breakType = cfg['break_type']
-            self.depth = cfg['depth']
         
         self.calibr_cfg = fo.config_cal(cfg)            
 
@@ -51,6 +49,8 @@ class cal_ShoreFor_2(object):
             self.Obs = self.Obs[~data.mask_nan_average_obs]
             self.time_obs = pd.to_datetime(data.time_obs.values)
             self.time_obs = self.time_obs[~data.mask_nan_average_obs]
+            self.depth = np.mean(data.waves_depth.values)
+            self.bathy_angle = circmean(data.phi.values, high=360, low=0)
         else:
             self.hs = data.hs.values[:, cfg['trs']]
             self.tp = data.tp.values[:, cfg['trs']]
@@ -60,6 +60,8 @@ class cal_ShoreFor_2(object):
             self.Obs = self.Obs[~data.mask_nan_obs[:, cfg['trs']]]
             self.time_obs = pd.to_datetime(data.time_obs.values)
             self.time_obs = self.time_obs[~data.mask_nan_obs[:, cfg['trs']]]
+            self.depth = data.waves_depth.values[cfg['trs']]
+            self.bathy_angle = data.phi.values[cfg['trs']]
         
         self.start_date = pd.to_datetime(cfg['start_date'])
         self.end_date = pd.to_datetime(cfg['end_date'])
@@ -344,17 +346,17 @@ class cal_ShoreFor_2(object):
         self.full_run = self.run_model(self.solution)
 
         if self.switch_D == 0 and self.switch_Yini == 0:
-            self.solution = np.array([self.solution[0], self.solution[1], self.solution[2]])
-            self.solution = np.hstack((self.solution, 2*self.solution[0]))
+            sol = np.array([self.solution[0], self.solution[1], self.solution[2]])
+            self.solution = np.hstack((sol, 2*self.solution[0]))
             self.par_names = [r'phi', r'c_a', r'c_e', r'D']
             self.par_values = self.solution.copy()
             self.par_values[1] = np.exp(self.par_values[1])
             self.par_values[2] = np.exp(self.par_values[2])
        
         elif self.switch_D == 0 and self.switch_Yini == 1:
-            self.solution = np.array([self.solution[0], self.solution[1], self.solution[2]])
-            self.solution = np.hstack((self.solution, 2*self.solution[0]))
-            self.solution = np.hstack((self.solution, self.solution[3]))
+            sol = np.array([self.solution[0], self.solution[1], self.solution[2]])
+            sol = np.hstack((sol, 2*self.solution[0]))
+            self.solution = np.hstack((sol, self.solution[3]))
             self.par_names = [r'phi', r'c_a', r'c_e', r'D', r'Y_i']
             self.par_values = self.solution.copy()
             self.par_values[1] = np.exp(self.par_values[1])
