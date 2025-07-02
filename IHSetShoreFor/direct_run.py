@@ -136,7 +136,7 @@ class ShoreFor_run(object):
                 cp = par[1]
                 cm = par[2]
                 D = 2 * phi
-                Yini = [par[4]]
+                Yini = [par[3]]
 
                 Ymd, _ = shoreFor_Yini(self.P,
                                     self.Omega,
