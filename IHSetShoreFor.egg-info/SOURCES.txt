@@ -3,6 +3,7 @@ README.md
 setup.py
 IHSetShoreFor/__init__.py
 IHSetShoreFor/calibration_2.py
+IHSetShoreFor/calibration_3.py
 IHSetShoreFor/direct_run.py
 IHSetShoreFor/shoreFor.py
 IHSetShoreFor.egg-info/PKG-INFO

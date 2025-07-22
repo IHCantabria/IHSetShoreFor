@@ -2,7 +2,7 @@ import numpy as np
 from numba import njit
 import math
 
-@njit(nopython=True, fastmath=True, cache=True)
+@njit(fastmath=True, cache=True)
 def shoreFor_Yini(P, Omega, dt_arr, phi, D, cp, cm, Sini):
     '''
     This function apply the ShoreFor (Davidson et al. 2013) model   
