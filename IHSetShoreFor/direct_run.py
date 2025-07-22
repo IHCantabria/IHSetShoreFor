@@ -213,7 +213,7 @@ from .shoreFor import shoreFor_idx_Yini, shoreFor_Yini
 from IHSetUtils import wMOORE
 from IHSetUtils.CoastlineModel import CoastlineModel
 
-class ShoreFor_run(object):
+class ShoreFor_run(CoastlineModel):
     """
     cal_ShoreFor_2
     

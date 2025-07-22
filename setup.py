@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='IHSetShoreFor',
-    version='1.8.23',
+    version='1.8.24',
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
