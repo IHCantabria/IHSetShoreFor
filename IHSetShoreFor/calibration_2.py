@@ -179,13 +179,16 @@ class cal_ShoreFor_2(CoastlineModel):
 
     def _set_parameter_names(self):
         if self.switch_Yini == 0 and self.switch_D == 0:
-            self.par_names = [r'$\phi$', r'$c_a$', r'$c_e$', r'$D$']
+            self.par_names = [r'phi', r'c_a', r'c_e', r'D']
+            self.par_values = np.hstack((self.par_values, 2*self.par_values[0]))
         elif self.switch_Yini == 1 and self.switch_D == 0:
-            self.par_names = [r'$\phi$', r'$c_a$', r'$c_e$', r'$D$', r'$Y_i$']
+            self.par_names = [r'phi', r'c_a', r'c_e', r'D', r'Y_i']
+            aux = np.hstack((self.par_values[:-1], 2*self.par_values[0]))
+            self.par_values = np.hstack((aux, self.par_values[-1]))
         elif self.switch_Yini == 0 and self.switch_D == 1:
-            self.par_names = [r'$\phi$', r'$c_a$', r'$c_e$', r'$D$']
+            self.par_names = [r'phi', r'c_a', r'c_e', r'D']
         elif self.switch_Yini == 1 and self.switch_D == 1:
-            self.par_names = [r'$\phi$', r'$c_a$', r'$c_e$', r'$D$', r'$Y_i$']
+            self.par_names = [r'phi', r'c_a', r'c_e', r'D', r'Y_i']
         
         for idx in [1, 2]:
             self.par_values[idx] = np.exp(self.par_values[idx])

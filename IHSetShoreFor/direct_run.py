@@ -310,11 +310,11 @@ class ShoreFor_run(object):
 
     def _set_parameter_names(self):
         if self.switch_Yini == 1 and self.switch_D == 0:
-            self.par_names = [r'$\phi$', r'$c_a$', r'$c_e$', r'$D$']
+            self.par_names = [r'phi', r'c_a', r'c_e']
         elif self.switch_Yini == 0 and self.switch_D == 0:
-            self.par_names = [r'$\phi$', r'$c_a$', r'$c_e$', r'$D$', r'$Y_i$']
+            self.par_names = [r'phi', r'c_a', r'c_e', r'Y_i']
         elif self.switch_Yini == 1 and self.switch_D == 1:
-            self.par_names = [r'$\phi$', r'$c_a$', r'$c_e$', r'$D$']
+            self.par_names = [r'phi', r'c_a', r'c_e', r'D']
         elif self.switch_Yini == 0 and self.switch_D == 1:
-            self.par_names = [r'$\phi$', r'$c_a$', r'$c_e$', r'$D$', r'$Y_i$']
+            self.par_names = [r'phi', r'c_a', r'c_e', r'D', r'Y_i']
         
