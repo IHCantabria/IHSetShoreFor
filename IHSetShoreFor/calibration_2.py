@@ -20,6 +20,8 @@ class cal_ShoreFor_2(CoastlineModel):
             model_key='ShoreFor'
         )
 
+        self.setup_forcing()
+
     def setup_forcing(self):
         self.switch_Yini = self.cfg['switch_Yini']
         self.switch_D = self.cfg['switch_D']

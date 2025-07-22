@@ -231,6 +231,8 @@ class ShoreFor_run(object):
             model_key='run_ShoreFor'
         )
 
+        self.setup_forcing()
+
     def setup_forcing(self):
         self.switch_Yini = self.cfg['switch_Yini']
         self.switch_D = self.cfg['switch_D']
