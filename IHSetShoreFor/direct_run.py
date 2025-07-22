@@ -239,7 +239,7 @@ class ShoreFor_run(CoastlineModel):
         self.D50 = self.cfg['D50']
 
         if self.switch_Yini == 1:
-            self.Yini = self.Obs_splited[0]
+            self.Yini = self.Obs[0]
                 
         self.hb[self.hb < 0.1] = 0.1
         self.depthb[self.depthb < 0.2] = 0.2
