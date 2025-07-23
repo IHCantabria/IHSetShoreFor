@@ -39,7 +39,7 @@ def shoreFor_Yini(P, Omega, dt_arr, phi, D, cp, cm, Sini):
 
     return S, OmegaEQ
 
-@njit(nopython=True, fastmath=True, cache=True)
+@njit(fastmath=True, cache=True)
 def shoreFor_idx_Yini(P, Omega, dt_arr, phi, D, cp, cm, Sini, idx_arr):
     '''
     This function apply the ShoreFor (Davidson et al. 2013) model   
