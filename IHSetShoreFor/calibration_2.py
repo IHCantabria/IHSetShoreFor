@@ -59,121 +59,56 @@ class cal_ShoreFor_2(CoastlineModel):
         return pop, lowers, uppers
     
     def model_sim(self, par: np.ndarray) -> np.ndarray:
+        phi = par[0]
+        cp = np.exp(par[1])
+        cm = np.exp(par[2])
         if self.switch_Yini == 0 and self.switch_D == 0:
-            phi = par[0]
-            cp = np.exp(par[1])
-            cm = np.exp(par[2])
             D = 2 * phi
-            Ymd, _ = shoreFor_idx_Yini(self.P_s,
-                                        self.Omega_s,
-                                        self.dt_s,
-                                        phi,
-                                        D,
-                                        cp,
-                                        cm,
-                                        self.Obs_splited,
-                                        self.idx_obs_splited)
+            Yini = self.Yini
         elif self.switch_Yini == 1 and self.switch_D == 0:
-            phi = par[0]
-            cp = np.exp(par[1])
-            cm = np.exp(par[2])
             D = 2 * phi
             Yini = [par[3]]
-            Ymd, _ = shoreFor_Yini(self.P_s,
-                                    self.Omega_s,
-                                    self.dt_s,
-                                    phi,
-                                    D,
-                                    cp,
-                                    cm,
-                                    Yini)
         elif self.switch_Yini == 0 and self.switch_D == 1:
-            phi = par[0]
-            cp = np.exp(par[1])
-            cm = np.exp(par[2])
             D = par[3]
-            Ymd, _ = shoreFor_idx_Yini(self.P_s,
-                                        self.Omega_s,
-                                        self.dt_s,
-                                        phi,
-                                        D,
-                                        cp,
-                                        cm,
-                                        self.Obs_splited,
-                                        self.idx_obs_splited)
+            Yini = self.Yini
         elif self.switch_Yini == 1 and self.switch_D == 1:
-            phi = par[0]
-            cp = np.exp(par[1])
-            cm = np.exp(par[2])
             D = par[3]
             Yini = [par[4]]
-            Ymd, _ = shoreFor_Yini(self.P_s,
-                                    self.Omega_s,
-                                    self.dt_s,
-                                    phi,
-                                    D,
-                                    cp,
-                                    cm,
-                                    Yini)
+        
+        Ymd, _ = shoreFor_Yini(self.P_s,
+                                self.Omega_s,
+                                self.dt_s,
+                                phi,
+                                D,
+                                cp,
+                                cm,
+                                Yini)
         return Ymd[self.idx_obs_splited]
 
     def run_model(self, par: np.ndarray) -> np.ndarray:
+        phi = par[0]
+        cp = par[1]
+        cm = par[2]
         if self.switch_Yini == 0 and self.switch_D == 0:
-            phi = par[0]
-            cp = par[1]
-            cm = par[2]
             D = 2 * phi
-            Ymd, _ = shoreFor_idx_Yini(self.P,
-                                    self.Omega,
-                                    self.dt,
-                                    phi,
-                                    D,
-                                    cp,
-                                    cm,
-                                    self.Obs,
-                                    self.idx_obs)
+            Yini = self.Yini
         elif self.switch_Yini == 1 and self.switch_D == 0:
-            phi = par[0]
-            cp = par[1]
-            cm = par[2]
             D = 2 * phi
-            Yini = [par[4]]
-            Ymd, _ = shoreFor_Yini(self.P,
-                                    self.Omega,
-                                    self.dt,
-                                    phi,
-                                    D,
-                                    cp,
-                                    cm,
-                                    Yini)
+            Yini = [par[3]]
         elif self.switch_Yini == 0 and self.switch_D == 1:
-            phi = par[0]
-            cp = par[1]
-            cm = par[2]
             D = par[3]
-            Ymd, _ = shoreFor_idx_Yini(self.P,
-                                    self.Omega,
-                                    self.dt,
-                                    phi,
-                                    D,
-                                    cp,
-                                    cm,
-                                    self.Obs,
-                                    self.idx_obs)
+            Yini = self.Yini
         elif self.switch_Yini == 1 and self.switch_D == 1:
-            phi = par[0]
-            cp = par[1]
-            cm = par[2]
             D = par[3]
             Yini = [par[4]]
-            Ymd, _ = shoreFor_Yini(self.P,
-                                    self.Omega,
-                                    self.dt,
-                                    phi,
-                                    D,
-                                    cp,
-                                    cm,
-                                    Yini)
+        Ymd, _ = shoreFor_Yini(self.P,
+                                self.Omega,
+                                self.dt,
+                                phi,
+                                D,
+                                cp,
+                                cm,
+                                Yini)
         return Ymd
 
     def _set_parameter_names(self):
