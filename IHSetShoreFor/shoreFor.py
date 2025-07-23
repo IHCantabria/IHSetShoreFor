@@ -24,22 +24,13 @@ def shoreFor_Yini(P, Omega, dt_arr, phi, D, cp, cm, Sini):
     S = np.empty(n)
     diff_cm_cp = cm - cp
 
-    # S0 = Sini[0]
+    S0 = Sini[0]
 
 
-    # for i in range(IDX+1):
-    #     S[i] = S0
+    for i in range(IDX+1):
+        S[i] = S0
 
-    # for i in range(IDX+1, n):
-    #     sP = math.sqrt(P[i])
-    #     F = sP * (OmegaEQ[i] - Omega[i])
-    #     cond_neg = 1.0 if F < 0.0 else 0.0
-    #     inc = F * (diff_cm_cp * cond_neg + cp)
-    #     S[i] = S[i-1] + dt * inc
-
-    S[0] = Sini
-
-    for i in range(1, n):
+    for i in range(IDX+1, n):
         sP = math.sqrt(P[i])
         F = sP * (OmegaEQ[i] - Omega[i])
         cond_neg = 1.0 if F < 0.0 else 0.0
@@ -78,22 +69,12 @@ def shoreFor_idx_Yini(P, Omega, dt_arr, phi, D, cp, cm, Sini, idx_arr):
         if d < mind:
             mind = d
             best = j
-    
-    # S0 = Sini[best]
+    S0 = Sini[best]
 
-    # for i in range(IDX+1):
-    #     S[i] = S0
+    for i in range(IDX+1):
+        S[i] = S0
 
-    # for i in range(IDX+1, n):
-    #     sP = math.sqrt(P[i])
-    #     F = sP * (OmegaEQ[i] - Omega[i])
-    #     cond_neg = 1.0 if F < 0.0 else 0.0
-    #     inc = F * (diff_cm_cp * cond_neg + cp)
-    #     S[i] = S[i-1] + dt * inc
-
-    S[0] = Sini[best]
-    
-    for i in range(1, n):
+    for i in range(IDX+1, n):
         sP = math.sqrt(P[i])
         F = sP * (OmegaEQ[i] - Omega[i])
         cond_neg = 1.0 if F < 0.0 else 0.0
