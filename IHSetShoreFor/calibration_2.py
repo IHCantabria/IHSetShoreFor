@@ -137,7 +137,7 @@ class cal_ShoreFor_2(CoastlineModel):
             cp = par[1]
             cm = par[2]
             D = 2 * phi
-            Yini = [par[3]]
+            Yini = [par[4]]
             Ymd, _ = shoreFor_Yini(self.P,
                                     self.Omega,
                                     self.dt,
