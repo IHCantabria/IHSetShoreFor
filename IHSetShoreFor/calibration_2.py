@@ -44,10 +44,9 @@ class cal_ShoreFor_2(CoastlineModel):
         if self.switch_Yini == 0 and self.switch_D == 0:
             lowers = np.array([self.lb[0], np.log(self.lb[1]), np.log(self.lb[2])])
             uppers = np.array([self.ub[0], np.log(self.ub[1]), np.log(self.ub[2])])
-
         elif self.switch_Yini == 1 and self.switch_D == 0:
-            lowers = np.array([self.lb[0], np.log(self.lb[1]), np.log(self.lb[2]), self.lb[3]])
-            uppers = np.array([self.ub[0], np.log(self.ub[1]), np.log(self.ub[2]), self.ub[3]])
+            lowers = np.array([self.lb[0], np.log(self.lb[1]), np.log(self.lb[2]), 0.75 * np.min(self.Obs)])
+            uppers = np.array([self.ub[0], np.log(self.ub[1]), np.log(self.ub[2]), 1.25 * np.max(self.Obs)])
         elif self.switch_Yini == 0 and self.switch_D == 1:
             lowers = np.array([self.lb[0], np.log(self.lb[1]), np.log(self.lb[2]), self.lb[3]])
             uppers = np.array([self.ub[0], np.log(self.ub[1]), np.log(self.ub[2]), self.ub[3]])
