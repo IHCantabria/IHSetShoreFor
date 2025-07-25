@@ -24,7 +24,7 @@ def shoreFor_Yini(P, Omega, dt_arr, phi, D, cp, cm, Sini):
     S = np.empty(n)
     diff_cm_cp = cm - cp
 
-    S0 = Sini[0]
+    S0 = Sini
 
 
     for i in range(IDX+1):
