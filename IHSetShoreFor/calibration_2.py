@@ -89,17 +89,10 @@ class cal_ShoreFor_2(CoastlineModel):
         phi = par[0]
         cp = par[1]
         cm = par[2]
-        if self.switch_Yini == 0 and self.switch_D == 0:
-            D = 2 * phi
+        D = par[3]
+        if self.switch_Yini == 0:
             Yini = self.Yini
-        elif self.switch_Yini == 1 and self.switch_D == 0:
-            D = 2 * phi
-            Yini = par[3]
-        elif self.switch_Yini == 0 and self.switch_D == 1:
-            D = par[3]
-            Yini = self.Yini
-        elif self.switch_Yini == 1 and self.switch_D == 1:
-            D = par[3]
+        elif self.switch_Yini == 1:
             Yini = par[4]
         Ymd, _ = shoreFor_Yini(self.P,
                                 self.Omega,
