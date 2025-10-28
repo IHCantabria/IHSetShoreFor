@@ -3,7 +3,7 @@ from numba import njit
 import math
 
 @njit(fastmath=True, cache=True)
-def shoreFor_Yini(P, Omega, dt_arr, phi, D, cp, cm, Sini):
+def shoreFor_Yini(P, Omega, dt_arr, phi, D, cp, cm, b, Sini):
     '''
     This function apply the ShoreFor (Davidson et al. 2013) model   
     '''
@@ -20,21 +20,24 @@ def shoreFor_Yini(P, Omega, dt_arr, phi, D, cp, cm, Sini):
     for i in range(1, n):
         OmegaEQ[i] = alpha * OmegaEQ[i-1] + (1.0 - alpha) * Omega[i]
 
-    IDX = int(math.floor(D * 24.0 / dt))
+    # IDX = int(math.floor(D * 24.0 / dt))
     S = np.empty(n)
     diff_cm_cp = cm - cp
 
-    S0 = Sini
+    # S0 = Sini
 
 
-    for i in range(IDX+1):
-        S[i] = S0
+    # for i in range(IDX+1):
+    #     S[i] = S0
 
-    for i in range(IDX+1, n):
+    # for i in range(IDX+1, n):
+
+    S[0] = Sini
+    for i in range(1, n):
         sP = math.sqrt(P[i])
         F = sP * (OmegaEQ[i] - Omega[i])
         cond_neg = 1.0 if F < 0.0 else 0.0
-        inc = F * (diff_cm_cp * cond_neg + cp)
+        inc = F * (diff_cm_cp * cond_neg + cp) + b
         S[i] = S[i-1] + dt * inc
 
     return S, OmegaEQ

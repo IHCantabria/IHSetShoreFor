@@ -253,18 +253,19 @@ class ShoreFor_run(CoastlineModel):
         phi = par[0]
         cp = par[1]
         cm = par[2]
+        b = par[3]
         if self.switch_Yini == 1 and self.switch_D == 1:
             D = 2 * phi
             Yini = self.Yini
         elif self.switch_Yini == 0 and self.switch_D == 1:
             D = 2 * phi
-            Yini = par[3]
+            Yini = par[4]
         elif self.switch_Yini == 1 and self.switch_D == 0:
-            D = par[3]
+            D = par[4]
             Yini = self.Yini
         elif self.switch_Yini == 0 and self.switch_D == 0:
-            D = par[3]
-            Yini = par[4]
+            D = par[4]
+            Yini = par[5]
 
         Ymd, _ = shoreFor_Yini(self.P,
                                 self.Omega,
@@ -273,16 +274,17 @@ class ShoreFor_run(CoastlineModel):
                                 D,
                                 cp,
                                 cm,
+                                b,
                                 Yini)
         return Ymd
 
     def _set_parameter_names(self):
         if self.switch_Yini == 1 and self.switch_D == 0:
-            self.par_names = [r'phi', r'c_a', r'c_e']
+            self.par_names = [r'phi', r'c_a', r'c_e', r'b']
         elif self.switch_Yini == 0 and self.switch_D == 0:
-            self.par_names = [r'phi', r'c_a', r'c_e', r'Y_i']
+            self.par_names = [r'phi', r'c_a', r'c_e', r'b', r'Y_i']
         elif self.switch_Yini == 1 and self.switch_D == 1:
-            self.par_names = [r'phi', r'c_a', r'c_e', r'D']
+            self.par_names = [r'phi', r'c_a', r'c_e', r'b', r'D']
         elif self.switch_Yini == 0 and self.switch_D == 1:
-            self.par_names = [r'phi', r'c_a', r'c_e', r'D', r'Y_i']
+            self.par_names = [r'phi', r'c_a', r'c_e', r'b', r'D', r'Y_i']
         

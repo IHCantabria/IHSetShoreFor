@@ -42,17 +42,17 @@ class cal_ShoreFor_2(CoastlineModel):
 
     def init_par(self, population_size: int):
         if self.switch_Yini == 0 and self.switch_D == 0:
-            lowers = np.array([self.lb[0], np.log(self.lb[1]), np.log(self.lb[2])])
-            uppers = np.array([self.ub[0], np.log(self.ub[1]), np.log(self.ub[2])])
+            lowers = np.array([self.lb[0], np.log(self.lb[1]), np.log(self.lb[2]), -1])
+            uppers = np.array([self.ub[0], np.log(self.ub[1]), np.log(self.ub[2]), 1])
         elif self.switch_Yini == 1 and self.switch_D == 0:
-            lowers = np.array([self.lb[0], np.log(self.lb[1]), np.log(self.lb[2]), 0.75 * np.min(self.Obs)])
-            uppers = np.array([self.ub[0], np.log(self.ub[1]), np.log(self.ub[2]), 1.25 * np.max(self.Obs)])
+            lowers = np.array([self.lb[0], np.log(self.lb[1]), np.log(self.lb[2]), -1, 0.75 * np.min(self.Obs)])
+            uppers = np.array([self.ub[0], np.log(self.ub[1]), np.log(self.ub[2]), 1, 1.25 * np.max(self.Obs)])
         elif self.switch_Yini == 0 and self.switch_D == 1:
-            lowers = np.array([self.lb[0], np.log(self.lb[1]), np.log(self.lb[2]), self.lb[3]])
-            uppers = np.array([self.ub[0], np.log(self.ub[1]), np.log(self.ub[2]), self.ub[3]])
+            lowers = np.array([self.lb[0], np.log(self.lb[1]), np.log(self.lb[2]), -1, self.lb[3]])
+            uppers = np.array([self.ub[0], np.log(self.ub[1]), np.log(self.ub[2]), 1, self.ub[3]])
         elif self.switch_Yini == 1 and self.switch_D == 1:
-            lowers = np.array([self.lb[0], np.log(self.lb[1]), np.log(self.lb[2]), self.lb[3], 0.75 * np.min(self.Obs)])
-            uppers = np.array([self.ub[0], np.log(self.ub[1]), np.log(self.ub[2]), self.ub[3], 1.25 * np.max(self.Obs)])
+            lowers = np.array([self.lb[0], np.log(self.lb[1]), np.log(self.lb[2]), -1, self.lb[3], 0.75 * np.min(self.Obs)])
+            uppers = np.array([self.ub[0], np.log(self.ub[1]), np.log(self.ub[2]), 1, self.ub[3], 1.25 * np.max(self.Obs)])
         pop = np.zeros((population_size, len(lowers)))
         for i in range(len(lowers)):
             pop[:, i] = np.random.uniform(lowers[i], uppers[i], population_size)
@@ -62,18 +62,19 @@ class cal_ShoreFor_2(CoastlineModel):
         phi = par[0]
         cp = np.exp(par[1])
         cm = np.exp(par[2])
+        b = par[3]
         if self.switch_Yini == 0 and self.switch_D == 0:
             D = 2 * phi
             Yini = self.Yini
         elif self.switch_Yini == 1 and self.switch_D == 0:
             D = 2 * phi
-            Yini = par[3]
+            Yini = par[4]
         elif self.switch_Yini == 0 and self.switch_D == 1:
-            D = par[3]
+            D = par[4]
             Yini = self.Yini
         elif self.switch_Yini == 1 and self.switch_D == 1:
-            D = par[3]
-            Yini = par[4]
+            D = par[4]
+            Yini = par[5]
         
         Ymd, _ = shoreFor_Yini(self.P_s,
                                 self.Omega_s,
@@ -82,6 +83,7 @@ class cal_ShoreFor_2(CoastlineModel):
                                 D,
                                 cp,
                                 cm,
+                                b,
                                 Yini)
         return Ymd[self.idx_obs_splited]
 
@@ -89,11 +91,12 @@ class cal_ShoreFor_2(CoastlineModel):
         phi = par[0]
         cp = par[1]
         cm = par[2]
-        D = par[3]
+        b = par[3]
+        D = par[4]
         if self.switch_Yini == 0:
             Yini = self.Yini
         elif self.switch_Yini == 1:
-            Yini = par[4]
+            Yini = par[5]
         Ymd, _ = shoreFor_Yini(self.P,
                                 self.Omega,
                                 self.dt,
@@ -101,21 +104,22 @@ class cal_ShoreFor_2(CoastlineModel):
                                 D,
                                 cp,
                                 cm,
+                                b,
                                 Yini)
         return Ymd
 
     def _set_parameter_names(self):
         if self.switch_Yini == 0 and self.switch_D == 0:
-            self.par_names = [r'phi', r'c_a', r'c_e', r'D']
+            self.par_names = [r'phi', r'c_a', r'c_e', r'b', r'D']
             self.par_values = np.hstack((self.par_values, 2*self.par_values[0]))
         elif self.switch_Yini == 1 and self.switch_D == 0:
-            self.par_names = [r'phi', r'c_a', r'c_e', r'D', r'Y_i']
+            self.par_names = [r'phi', r'c_a', r'c_e', r'b', r'D', r'Y_i']
             aux = np.hstack((self.par_values[:-1], 2*self.par_values[0]))
             self.par_values = np.hstack((aux, self.par_values[-1]))
         elif self.switch_Yini == 0 and self.switch_D == 1:
-            self.par_names = [r'phi', r'c_a', r'c_e', r'D']
+            self.par_names = [r'phi', r'c_a', r'c_e', r'b', r'D']
         elif self.switch_Yini == 1 and self.switch_D == 1:
-            self.par_names = [r'phi', r'c_a', r'c_e', r'D', r'Y_i']
-        
+            self.par_names = [r'phi', r'c_a', r'c_e', r'b', r'D', r'Y_i']
+
         for idx in [1, 2]:
             self.par_values[idx] = np.exp(self.par_values[idx])
