@@ -148,7 +148,7 @@ def shoreFor_Yini(P, Omega, dt_arr, phi_days, D_days, cp, cm, b, Sini):
 
         # dx/dt = b + c_eff * F
         dSdt = b + c_eff * F
-        S[t] = S[t-1] + (dt_h * 3600.0) * dSdt  # dt_h is hours -> seconds
+        S[t] = S[t-1] + dt_h * dSdt  # dt_h is hours -> seconds
     return S, Omega_eq
 
 @njit(fastmath=True, cache=True)
