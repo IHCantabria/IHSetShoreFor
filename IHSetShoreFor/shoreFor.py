@@ -44,7 +44,7 @@ import math
 
 
 @njit(fastmath=True, cache=True)
-def shoreFor_paper(P, Omega, dt_arr, phi_days, D_days, cp, cm, b, Sini):
+def shoreFor_Yini(P, Omega, dt_arr, phi_days, D_days, cp, cm, b, Sini):
     """
     ShoreFor (Davidson et al., 2013) without convolution:
         dx/dt = b + c * sqrt(P) * (Omega_eq - Omega)
