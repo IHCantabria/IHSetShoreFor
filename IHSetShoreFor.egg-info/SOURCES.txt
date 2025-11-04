@@ -2,6 +2,7 @@ LICENSE
 README.md
 setup.py
 IHSetShoreFor/__init__.py
+IHSetShoreFor/assimilate.py
 IHSetShoreFor/calibration_2.py
 IHSetShoreFor/calibration_3.py
 IHSetShoreFor/direct_run.py

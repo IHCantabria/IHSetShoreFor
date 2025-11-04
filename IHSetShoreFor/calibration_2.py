@@ -32,7 +32,7 @@ class cal_ShoreFor_2(CoastlineModel):
                 
         self.hb[self.hb < 0.1] = 0.1
         self.depthb[self.depthb < 0.2] = 0.2
-        self.tp[self.tp < 5] = 5
+        self.tp[self.tp < 2] = 2
 
         self.P = self.hb ** 2 * self.tp
         self.P_s = self.hb_s ** 2 * self.tp_s

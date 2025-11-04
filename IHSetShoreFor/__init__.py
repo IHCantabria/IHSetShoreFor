@@ -4,3 +4,4 @@
 from .shoreFor import shoreFor_Yini, shoreFor_idx_Yini
 from .calibration_2 import cal_ShoreFor_2
 from .direct_run import ShoreFor_run
+from .assimilate import assimilate_ShoreFor
