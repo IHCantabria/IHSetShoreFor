@@ -63,16 +63,16 @@ class assimilate_ShoreFor(CoastlineModel):
         # lb = [phi_min, ca_min, ce_min, D_min] (if switch_D==1) ; b bounds are fixed here as [-1, 1] like your calibration
         # ub = [phi_max, ca_max, ce_max, D_max]
         # We sample log(ca), log(ce) to keep positivity inside model
-        phi_lo, ca_lo, ce_lo = self.lb[0], self.lb[1], self.lb[2]
-        phi_up, ca_up, ce_up = self.ub[0], self.ub[1], self.ub[2]
+        phi_lo, ca_lo, ce_lo, b_lo = self.lb[0], self.lb[1], self.lb[2], self.lb[3]
+        phi_up, ca_up, ce_up, b_up = self.ub[0], self.ub[1], self.ub[2], self.ub[3]
 
         if self.switch_D == 0:
-            lowers = np.array([phi_lo, np.log(ca_lo), np.log(ce_lo), -1.0])
-            uppers = np.array([phi_up, np.log(ca_up), np.log(ce_up),  1.0])
+            lowers = np.array([phi_lo, np.log(ca_lo), np.log(ce_lo), b_lo])
+            uppers = np.array([phi_up, np.log(ca_up), np.log(ce_up),  b_up])
         else:
-            D_lo, D_up = self.lb[3], self.ub[3]
-            lowers = np.array([phi_lo, np.log(ca_lo), np.log(ce_lo), -1.0, D_lo])
-            uppers = np.array([phi_up, np.log(ca_up), np.log(ce_up),  1.0, D_up])
+            D_lo, D_up = self.lb[4], self.ub[4]
+            lowers = np.array([phi_lo, np.log(ca_lo), np.log(ce_lo), b_lo, D_lo])
+            uppers = np.array([phi_up, np.log(ca_up), np.log(ce_up),  b_up, D_up])
 
         Ddim = len(lowers)
         pop = np.zeros((population_size, Ddim))
