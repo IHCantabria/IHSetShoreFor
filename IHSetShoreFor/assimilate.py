@@ -93,17 +93,22 @@ class assimilate_ShoreFor(CoastlineModel):
 
         # segment indices for this obs step
         i0, i1 = self.idx_obs_splited[t_idx - 1], self.idx_obs_splited[t_idx]
-        P_seg    = self.P_s[i0:i1]
-        Omega_seg= self.Omega_s[i0:i1]
-        dt_seg   = self.dt_s[i0:i1]
+        if context is None or ('y_old' not in context):
+            y0 = float(self.Yini)   # first step starts from initial shoreline
+        else:
+            y0 = float(context['y_old'])
 
-        # initial condition for this segment
-        y0 = float(self.Yini) if (context is None or ('y_old' not in context)) else float(context['y_old'])
+        if i0 >= i1:
+            return np.array([y0], dtype=float), {'y_old': y0}
+        else:
+            P_seg    = self.P_s[i0:i1]
+            Omega_seg= self.Omega_s[i0:i1]
+            dt_seg   = self.dt_s[i0:i1]
 
-        Ymd, _ = shoreFor_Yini(P_seg, Omega_seg, dt_seg, phi, D, ca, ce, b, y0)
-        y_last = float(Ymd[-1])
-        context = {'y_old': y_last}
-        return y_last, context
+            Ymd, _ = shoreFor_Yini(P_seg, Omega_seg, dt_seg, phi, D, ca, ce, b, y0)
+            y_last = float(Ymd[-1])
+            context = {'y_old': y_last}
+            return y_last, context
 
     # ----------------------
     # Vectorized batch step (speeds EnKF a lot)
@@ -114,26 +119,35 @@ class assimilate_ShoreFor(CoastlineModel):
         new_ctx = [None] * N
 
         i0, i1 = self.idx_obs_splited[t_idx - 1], self.idx_obs_splited[t_idx]
-        P_seg     = self.P_s[i0:i1]
-        Omega_seg = self.Omega_s[i0:i1]
-        dt_seg    = self.dt_s[i0:i1]
+        if i0 >= i1:
+            for j in range(N):
+                y0 = float(self.Yini) if (contexts is None or contexts[j] is None
+                                        or 'y_old' not in contexts[j]) else float(contexts[j]['y_old'])
 
-        for j in range(N):
-            phi = pop[j, 0]
-            ca  = float(np.exp(pop[j, 1]))
-            ce  = float(np.exp(pop[j, 2]))
-            b   = pop[j, 3]
-            D   = (pop[j, 4] if self.switch_D == 1 else 2.0 * phi)
+                y_out[j]   = y0
+                new_ctx[j] = {'y_old': y0}
+            return y_out, new_ctx
+        else:
+            P_seg     = self.P_s[i0:i1]
+            Omega_seg = self.Omega_s[i0:i1]
+            dt_seg    = self.dt_s[i0:i1]
 
-            y0 = float(self.Yini) if (contexts is None or contexts[j] is None
-                                      or ('y_old' not in contexts[j])) else float(contexts[j]['y_old'])
+            for j in range(N):
+                phi = pop[j, 0]
+                ca  = float(np.exp(pop[j, 1]))
+                ce  = float(np.exp(pop[j, 2]))
+                b   = pop[j, 3]
+                D   = (pop[j, 4] if self.switch_D == 1 else 2.0 * phi)
 
-            Ymd, _ = shoreFor_Yini(P_seg, Omega_seg, dt_seg, phi, D, ca, ce, b, y0)
-            y_last = float(Ymd[-1])
-            y_out[j] = y_last
-            new_ctx[j] = {'y_old': y_last}
+                y0 = float(self.Yini) if (contexts is None or contexts[j] is None
+                                        or ('y_old' not in contexts[j])) else float(contexts[j]['y_old'])
 
-        return y_out, new_ctx
+                Ymd, _ = shoreFor_Yini(P_seg, Omega_seg, dt_seg, phi, D, ca, ce, b, y0)
+                y_last = float(Ymd[-1])
+                y_out[j] = y_last
+                new_ctx[j] = {'y_old': y_last}
+
+            return y_out, new_ctx
 
     # ----------------------
     # Full forward run with final parameters (for plotting/output)
