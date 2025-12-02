@@ -34,25 +34,25 @@ class cal_ShoreFor_2(CoastlineModel):
         self.depthb[self.depthb < 0.2] = 0.2
         self.tp[self.tp < 2] = 2
 
-        self.P = self.hb ** 2 * (self.tp/3600.0)  # tp in seconds -> hours
-        self.P_s = self.hb_s ** 2 * (self.tp_s/3600.0)
+        self.P = self.hb ** 2 * self.tp
+        self.P_s = self.hb_s ** 2 * self.tp_s
         self.ws = wMOORE(self.D50)
-        self.Omega = self.hb / (self.ws * (self.tp/3600.0))
-        self.Omega_s = self.hb_s / (self.ws * (self.tp_s/3600.0))
+        self.Omega = self.hb / (self.ws * self.tp)
+        self.Omega_s = self.hb_s / (self.ws * self.tp_s)
 
     def init_par(self, population_size: int):
         if self.switch_Yini == 0 and self.switch_D == 0:
-            lowers = np.array([self.lb[0], np.log(self.lb[1]), np.log(self.lb[2]), -1])
-            uppers = np.array([self.ub[0], np.log(self.ub[1]), np.log(self.ub[2]), 1])
+            lowers = np.array([self.lb[0], np.log(self.lb[1]), np.log(self.lb[2]), -1e-5])
+            uppers = np.array([self.ub[0], np.log(self.ub[1]), np.log(self.ub[2]), 1e-5])
         elif self.switch_Yini == 1 and self.switch_D == 0:
-            lowers = np.array([self.lb[0], np.log(self.lb[1]), np.log(self.lb[2]), -1, 0.75 * np.min(self.Obs)])
-            uppers = np.array([self.ub[0], np.log(self.ub[1]), np.log(self.ub[2]), 1, 1.25 * np.max(self.Obs)])
+            lowers = np.array([self.lb[0], np.log(self.lb[1]), np.log(self.lb[2]), -1e-5, 0.75 * np.min(self.Obs)])
+            uppers = np.array([self.ub[0], np.log(self.ub[1]), np.log(self.ub[2]), 1e-5, 1.25 * np.max(self.Obs)])
         elif self.switch_Yini == 0 and self.switch_D == 1:
-            lowers = np.array([self.lb[0], np.log(self.lb[1]), np.log(self.lb[2]), -1, self.lb[3]])
-            uppers = np.array([self.ub[0], np.log(self.ub[1]), np.log(self.ub[2]), 1, self.ub[3]])
+            lowers = np.array([self.lb[0], np.log(self.lb[1]), np.log(self.lb[2]), -1e-5, self.lb[3]])
+            uppers = np.array([self.ub[0], np.log(self.ub[1]), np.log(self.ub[2]), 1e-5, self.ub[3]])
         elif self.switch_Yini == 1 and self.switch_D == 1:
-            lowers = np.array([self.lb[0], np.log(self.lb[1]), np.log(self.lb[2]), -1, self.lb[3], 0.75 * np.min(self.Obs)])
-            uppers = np.array([self.ub[0], np.log(self.ub[1]), np.log(self.ub[2]), 1, self.ub[3], 1.25 * np.max(self.Obs)])
+            lowers = np.array([self.lb[0], np.log(self.lb[1]), np.log(self.lb[2]), -1e-5, self.lb[3], 0.75 * np.min(self.Obs)])
+            uppers = np.array([self.ub[0], np.log(self.ub[1]), np.log(self.ub[2]), 1e-5, self.ub[3], 1.25 * np.max(self.Obs)])
         pop = np.zeros((population_size, len(lowers)))
         for i in range(len(lowers)):
             pop[:, i] = np.random.uniform(lowers[i], uppers[i], population_size)

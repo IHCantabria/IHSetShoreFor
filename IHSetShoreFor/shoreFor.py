@@ -86,6 +86,7 @@ def shoreFor_Yini(P, Omega, dt_arr, phi_days, D_days, cp, cm, b, Sini):
         dt_h += dt_arr[j]
     dt_h /= dt_arr.shape[0]
     dt_d = dt_h / 24.0
+    dt_s = dt_h * 3600.0  # dt in SECONDS for time integration of S
 
     # Base-10 decay per step: beta = 10^{-Δt/φ}
     # Use τ = φ days directly (no 24 factor here because dt_d is in days)
@@ -148,7 +149,7 @@ def shoreFor_Yini(P, Omega, dt_arr, phi_days, D_days, cp, cm, b, Sini):
 
         # dx/dt = b + c_eff * F
         dSdt = b + c_eff * F
-        S[t] = S[t-1] + dt_h * dSdt  # dt_h in HOURS
+        S[t] = S[t-1] + dt_s * dSdt  # dt_h in HOURS
     return S, Omega_eq
 
 @njit(fastmath=True, cache=True)
