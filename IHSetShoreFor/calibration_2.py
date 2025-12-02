@@ -42,17 +42,17 @@ class cal_ShoreFor_2(CoastlineModel):
 
     def init_par(self, population_size: int):
         if self.switch_Yini == 0 and self.switch_D == 0:
-            lowers = np.array([self.lb[0], np.log(self.lb[1]), np.log(self.lb[2]), -1])
-            uppers = np.array([self.ub[0], np.log(self.ub[1]), np.log(self.ub[2]), 1])
+            lowers = np.array([self.lb[0], np.log(self.lb[1]), np.log(self.lb[2]), -1e-6])
+            uppers = np.array([self.ub[0], np.log(self.ub[1]), np.log(self.ub[2]), 1e-6])
         elif self.switch_Yini == 1 and self.switch_D == 0:
-            lowers = np.array([self.lb[0], np.log(self.lb[1]), np.log(self.lb[2]), -1, 0.75 * np.min(self.Obs)])
-            uppers = np.array([self.ub[0], np.log(self.ub[1]), np.log(self.ub[2]), 1, 1.25 * np.max(self.Obs)])
+            lowers = np.array([self.lb[0], np.log(self.lb[1]), np.log(self.lb[2]), -1e-6, 0.75 * np.min(self.Obs)])
+            uppers = np.array([self.ub[0], np.log(self.ub[1]), np.log(self.ub[2]), 1e-6, 1.25 * np.max(self.Obs)])
         elif self.switch_Yini == 0 and self.switch_D == 1:
-            lowers = np.array([self.lb[0], np.log(self.lb[1]), np.log(self.lb[2]), -1, self.lb[3]])
-            uppers = np.array([self.ub[0], np.log(self.ub[1]), np.log(self.ub[2]), 1, self.ub[3]])
+            lowers = np.array([self.lb[0], np.log(self.lb[1]), np.log(self.lb[2]), -1e-6, self.lb[3]])
+            uppers = np.array([self.ub[0], np.log(self.ub[1]), np.log(self.ub[2]), 1e-6, self.ub[3]])
         elif self.switch_Yini == 1 and self.switch_D == 1:
-            lowers = np.array([self.lb[0], np.log(self.lb[1]), np.log(self.lb[2]), -1, self.lb[3], 0.75 * np.min(self.Obs)])
-            uppers = np.array([self.ub[0], np.log(self.ub[1]), np.log(self.ub[2]), 1, self.ub[3], 1.25 * np.max(self.Obs)])
+            lowers = np.array([self.lb[0], np.log(self.lb[1]), np.log(self.lb[2]), -1e-6, self.lb[3], 0.75 * np.min(self.Obs)])
+            uppers = np.array([self.ub[0], np.log(self.ub[1]), np.log(self.ub[2]), 1e-6, self.ub[3], 1.25 * np.max(self.Obs)])
         pop = np.zeros((population_size, len(lowers)))
         for i in range(len(lowers)):
             pop[:, i] = np.random.uniform(lowers[i], uppers[i], population_size)
